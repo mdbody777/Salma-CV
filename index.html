@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salma Abdelrazik - CV</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fcfaf8; /* Soft off-white */
+            color: #333;
+        }
+
+        .font-serif-custom {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .bg-primary {
+            background-color: #8c1c1c; /* Deep red from the CV border */
+        }
+        
+        .text-primary {
+            color: #8c1c1c;
+        }
+
+        .border-primary {
+            border-color: #8c1c1c;
+        }
+
+        .bg-secondary {
+            background-color: #a8799a; /* Mauve/purple from the hijab */
+        }
+
+        .text-secondary {
+            color: #a8799a;
+        }
+
+        /* Glassmorphism effects */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+        }
+
+        /* Reveal animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Custom timeline styles */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -33px;
+            top: 6px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #8c1c1c;
+            border: 3px solid #fff;
+            box-shadow: 0 0 0 2px #a8799a;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover::before {
+            transform: scale(1.2);
+            background-color: #a8799a;
+            box-shadow: 0 0 0 2px #8c1c1c;
+        }
+
+        /* Interactive tags */
+        .skill-tag {
+            transition: all 0.2s ease;
+        }
+        
+        .skill-tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            background-color: #a8799a;
+            color: white;
+            border-color: #a8799a;
+        }
+
+        /* Cursive signature style for header */
+        .signature {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: clamp(3rem, 8vw, 6rem);
+            line-height: 1;
+            background: linear-gradient(to right, #333, #8c1c1c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 50;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal.show {
+            display: flex;
+            opacity: 1;
+        }
+        
+        .modal-content {
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        
+        .modal.show .modal-content {
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-secondary selection:text-white relative">
+
+    <nav class="fixed w-full z-40 top-0 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0">
+                    <a href="#" class="font-serif-custom italic font-bold text-xl text-primary">S.A.</a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#about" class="hover:text-primary transition-colors px-3 py-2 rounded-md text-sm font-medium">About</a>
+                        <a href="#experience" class="hover:text-primary transition-colors px-3 py-2 rounded-md text-sm font-medium">Experience</a>
+                        <a href="#skills" class="hover:text-primary transition-colors px-3 py-2 rounded-md text-sm font-medium">Skills</a>
+                        <a href="#contact" class="hover:text-primary transition-colors px-3 py-2 rounded-md text-sm font-medium">Contact</a>
+                    </div>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-800 hover:text-primary focus:outline-none p-2">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu panel -->
+        <div id="mobile-menu" class="hidden md:hidden glass-panel border-t border-gray-200">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#about" class="block hover:bg-gray-100 hover:text-primary px-3 py-2 rounded-md text-base font-medium mobile-link">About</a>
+                <a href="#experience" class="block hover:bg-gray-100 hover:text-primary px-3 py-2 rounded-md text-base font-medium mobile-link">Experience</a>
+                <a href="#skills" class="block hover:bg-gray-100 hover:text-primary px-3 py-2 rounded-md text-base font-medium mobile-link">Skills</a>
+                <a href="#contact" class="block hover:bg-gray-100 hover:text-primary px-3 py-2 rounded-md text-base font-medium mobile-link">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="relative pt-24 pb-12 lg:pt-32 lg:pb-24 overflow-hidden min-h-screen flex items-center">
+        <!-- Decorative background elements -->
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-secondary opacity-10 blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-primary opacity-10 blur-3xl"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <div class="lg:col-span-7 order-2 lg:order-1 text-center lg:text-left reveal">
+                    <h1 class="signature mb-2">Salma</h1>
+                    <h2 class="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4 uppercase">
+                        Abdelrazik
+                    </h2>
+                    <p class="text-xl md:text-2xl text-secondary font-medium mb-6 uppercase tracking-wider">
+                        3rd Year Medical Student
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-4 justify-center lg:justify-start mt-8">
+                        <a href="#contact" class="px-6 py-3 bg-primary text-white font-medium rounded-full hover:bg-opacity-90 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                            Get in Touch
+                        </a>
+                        <a href="#experience" class="px-6 py-3 bg-white border-2 border-primary text-primary font-medium rounded-full hover:bg-primary hover:text-white transition-all shadow-md">
+                            View Experience
+                        </a>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 order-1 lg:order-2 flex justify-center reveal" style="transition-delay: 200ms;">
+                    <div class="relative">
+                        <!-- Red border frame matching CV design -->
+                        <div class="absolute inset-0 border-4 border-primary rounded-2xl transform translate-x-4 translate-y-4"></div>
+                        <div class="relative rounded-2xl overflow-hidden shadow-2xl bg-white p-2">
+                            <!-- Using a placeholder since we don't have the actual image file, but styling it to match the description -->
+                            <div class="w-64 h-80 md:w-80 md:h-96 bg-gray-200 rounded-xl overflow-hidden relative">
+                                <!-- Simulated image based on CV content (woman in mauve hijab) -->
+                                <img src="https://placehold.co/400x500/a8799a/ffffff?text=Salma+Abdelrazik" alt="Salma Abdelrazik" class="object-cover w-full h-full" id="profileImage">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <section id="about" class="py-20 bg-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                
+                <!-- About Me -->
+                <div class="reveal glass-panel p-8 rounded-2xl border-l-4 border-l-secondary">
+                    <h3 class="text-3xl font-serif-custom font-bold text-gray-900 mb-6 flex items-center">
+                        <i class="fas fa-user-circle text-primary mr-3"></i> About Me
+                    </h3>
+                    <p class="text-gray-700 leading-relaxed text-lg">
+                        I love being part of initiatives that make a difference whether supporting causes I care about or simply being there for people if they need it. Volunteering has taught me teamwork, patience, and how even small efforts can create a big impact. I enjoy meeting new people, learning along the way, and creating meaningful moments that last.
+                    </p>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="reveal glass-panel p-8 rounded-2xl border-l-4 border-l-primary" style="transition-delay: 200ms;">
+                    <h3 class="text-3xl font-serif-custom font-bold text-gray-900 mb-6 flex items-center">
+                        <i class="fas fa-address-card text-secondary mr-3"></i> Contact
+                    </h3>
+                    <ul class="space-y-6">
+                        <li class="flex items-center group">
+                            <div class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mr-4 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                                <i class="fas fa-phone-alt text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 font-medium">Phone</p>
+                                <a href="tel:+966564131353" class="text-lg text-gray-900 font-medium hover:text-primary transition-colors">+966 564131353</a>
+                            </div>
+                        </li>
+                        <li class="flex items-center group">
+                            <div class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mr-4 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                                <i class="fas fa-envelope text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 font-medium">Email</p>
+                                <a href="mailto:smohamed01@alfaisal.edu" class="text-lg text-gray-900 font-medium hover:text-primary transition-colors">smohamed01@alfaisal.edu</a>
+                            </div>
+                        </li>
+                        <li class="flex items-center group">
+                            <div class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mr-4 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                                <i class="fas fa-university text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 font-medium">Institution</p>
+                                <p class="text-lg text-gray-900 font-medium">Alfaisal University</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="py-20 bg-gray-50 relative overflow-hidden">
+        <!-- Background pattern -->
+        <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(#8c1c1c 1px, transparent 1px); background-size: 20px 20px;"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-4xl font-serif-custom font-bold text-gray-900 mb-4">Competencies</h2>
+                <div class="w-24 h-1 bg-primary mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <!-- Skills -->
+                <div class="reveal">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                        <i class="fas fa-star text-secondary mr-3"></i> Core Skills
+                    </h3>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="skill-tag px-4 py-2 border border-gray-300 rounded-full text-sm font-semibold text-gray-700 cursor-default">PROBLEM-SOLVING</span>
+                        <span class="skill-tag px-4 py-2 border border-gray-300 rounded-full text-sm font-semibold text-gray-700 cursor-default">LEADERSHIP</span>
+                        <span class="skill-tag px-4 py-2 border border-gray-300 rounded-full text-sm font-semibold text-gray-700 cursor-default">ADAPTABILITY</span>
+                        <span class="skill-tag px-4 py-2 border border-gray-300 rounded-full text-sm font-semibold text-gray-700 cursor-default">PUBLIC SPEAKING</span>
+                        <span class="skill-tag px-4 py-2 border border-gray-300 rounded-full text-sm font-semibold text-gray-700 cursor-default">EVENT COORDINATION</span>
+                        <span class="skill-tag px-4 py-2 border border-gray-300 rounded-full text-sm font-semibold text-gray-700 cursor-default">PUBLIC RELATIONS</span>
+                        <span class="skill-tag px-4 py-2 border border-gray-300 rounded-full text-sm font-semibold text-gray-700 cursor-default">TEAMWORK</span>
+                        <span class="skill-tag px-4 py-2 border border-gray-300 rounded-full text-sm font-semibold text-gray-700 cursor-default">EMPATHY & PEOPLE SKILLS</span>
+                    </div>
+                </div>
+
+                <!-- Languages -->
+                <div class="reveal" style="transition-delay: 200ms;">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                        <i class="fas fa-language text-primary mr-3"></i> Languages
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-secondary flex justify-between items-center">
+                            <span class="font-bold text-lg text-gray-800">Arabic</span>
+                            <span class="text-sm bg-gray-100 px-3 py-1 rounded-full text-gray-600 font-medium">Native</span>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-primary flex justify-between items-center">
+                            <span class="font-bold text-lg text-gray-800">English</span>
+                            <span class="text-sm bg-gray-100 px-3 py-1 rounded-full text-gray-600 font-medium">Fluent</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience" class="py-20 bg-white">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-4xl font-serif-custom font-bold text-gray-900 mb-4">Experience & Achievements</h2>
+                <div class="w-24 h-1 bg-secondary mx-auto rounded-full mb-6"></div>
+                <p class="text-gray-600">Click on cards for details</p>
+            </div>
+
+            <div class="relative border-l-2 border-gray-200 pl-8 ml-4 md:ml-0 md:pl-0 md:border-l-0">
+                <!-- Center line for large screens -->
+                <div class="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full border-l-2 border-gray-200"></div>
+
+                <!-- Timeline Year Marker -->
+                <div class="reveal mb-12 flex justify-start md:justify-center relative z-10">
+                    <span class="bg-primary text-white px-6 py-2 rounded-full font-bold shadow-md">Second Year (2025-2026/27)</span>
+                </div>
+
+                <!-- Item 1: Self Development Subhead -->
+                <div class="mb-12 relative md:flex justify-between items-center w-full reveal group cursor-pointer" onclick="openModal('modal-self-dev')">
+                    <div class="hidden md:block w-5/12"></div>
+                    <div class="timeline-item z-20 flex items-center order-1 bg-white shadow-xl w-8 h-8 rounded-full md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:!left-auto md:!before:hidden">
+                        <div class="mx-auto bg-primary w-4 h-4 rounded-full border-2 border-white shadow transition-transform duration-300 group-hover:scale-150 group-hover:bg-secondary"></div>
+                    </div>
+                    <div class="w-full md:w-5/12 bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 transform group-hover:-translate-y-1 mt-4 md:mt-0 text-left md:text-right relative">
+                        <div class="absolute inset-0 bg-gradient-to-r from-transparent to-gray-50 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl"></div>
+                        <h3 class="font-bold text-xl text-primary mb-1 relative z-10">Self Development Subhead GND</h3>
+                        <p class="text-sm text-gray-500 mb-3 font-semibold relative z-10">2025-2026</p>
+                        <p class="text-gray-700 text-sm relative z-10">Organized numerous events and talks including MedTimes Art Week, Across the Table networking, and various motivational and religious sessions.</p>
+                        <span class="inline-block mt-3 text-secondary text-xs font-bold uppercase tracking-wider relative z-10">Click to read more <i class="fas fa-arrow-right ml-1"></i></span>
+                    </div>
+                </div>
+
+                <!-- Item 2: Global Health Society -->
+                <div class="mb-12 relative md:flex justify-between items-center w-full reveal group cursor-pointer flex-row-reverse" onclick="openModal('modal-global-health')">
+                    <div class="hidden md:block w-5/12"></div>
+                    <div class="timeline-item z-20 flex items-center order-1 bg-white shadow-xl w-8 h-8 rounded-full md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:!left-auto md:!before:hidden">
+                        <div class="mx-auto bg-secondary w-4 h-4 rounded-full border-2 border-white shadow transition-transform duration-300 group-hover:scale-150 group-hover:bg-primary"></div>
+                    </div>
+                    <div class="w-full md:w-5/12 bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 transform group-hover:-translate-y-1 mt-4 md:mt-0 text-left relative">
+                        <h3 class="font-bold text-xl text-secondary mb-1">Global Health Society Podcast Head</h3>
+                        <p class="text-sm text-gray-500 mb-3 font-semibold">2025-2027</p>
+                        <p class="text-gray-700 text-sm">Filmed and edited street style interviews raising awareness on health issues, and produced podcast episodes with international doctors.</p>
+                    </div>
+                </div>
+
+                <!-- Item 3: H4H Outreach -->
+                <div class="mb-12 relative md:flex justify-between items-center w-full reveal group">
+                    <div class="hidden md:block w-5/12"></div>
+                    <div class="timeline-item z-20 flex items-center order-1 bg-white shadow-xl w-8 h-8 rounded-full md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:!left-auto md:!before:hidden">
+                        <div class="mx-auto bg-primary w-4 h-4 rounded-full border-2 border-white shadow transition-transform duration-300 group-hover:scale-150 group-hover:bg-secondary"></div>
+                    </div>
+                    <div class="w-full md:w-5/12 bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 transform group-hover:-translate-y-1 mt-4 md:mt-0 text-left md:text-right">
+                        <h3 class="font-bold text-xl text-primary mb-1">H4H Outreach Head</h3>
+                        <p class="text-sm text-gray-500 mb-3 font-semibold">2025-2027</p>
+                        <p class="text-gray-700 text-sm">Organized a Ramadan meal distribution initiative for people in need near King Saud University, coordinating volunteers and logistics.</p>
+                    </div>
+                </div>
+
+                <!-- Item 4: Academic Achievements (Grouped) -->
+                <div class="mb-12 relative md:flex justify-between items-center w-full reveal group cursor-pointer flex-row-reverse" onclick="openModal('modal-academic')">
+                    <div class="hidden md:block w-5/12"></div>
+                    <div class="timeline-item z-20 flex items-center order-1 bg-white shadow-xl w-8 h-8 rounded-full md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:!left-auto md:!before:hidden">
+                        <div class="mx-auto bg-gray-800 w-4 h-4 rounded-full border-2 border-white shadow transition-transform duration-300 group-hover:scale-150"></div>
+                    </div>
+                    <div class="w-full md:w-5/12 bg-gray-900 text-white rounded-2xl shadow-lg p-6 border border-gray-800 hover:shadow-xl transition-all duration-300 transform group-hover:-translate-y-1 mt-4 md:mt-0 text-left">
+                        <h3 class="font-bold text-xl mb-3 flex items-center"><i class="fas fa-graduation-cap mr-2 text-secondary"></i> Academic & Committee Roles</h3>
+                        <ul class="text-sm space-y-2 text-gray-300">
+                            <li><i class="fas fa-check text-primary mr-2"></i> Exam Committee Best Member</li>
+                            <li><i class="fas fa-check text-primary mr-2"></i> Lab Committee Best Member</li>
+                            <li><i class="fas fa-check text-primary mr-2"></i> PAL Tutor</li>
+                            <li><i class="fas fa-check text-primary mr-2"></i> MSK & Upper GIT Crash Courses</li>
+                        </ul>
+                        <span class="inline-block mt-4 text-secondary text-xs font-bold uppercase tracking-wider">Presentations & More <i class="fas fa-plus ml-1"></i></span>
+                    </div>
+                </div>
+
+                <!-- Timeline Year Marker -->
+                <div class="reveal mb-12 flex justify-start md:justify-center relative z-10 mt-20">
+                    <span class="bg-secondary text-white px-6 py-2 rounded-full font-bold shadow-md">First Year</span>
+                </div>
+
+                <!-- Item 5: Volunteering First Year -->
+                <div class="mb-12 relative md:flex justify-between items-center w-full reveal group cursor-pointer" onclick="openModal('modal-first-year')">
+                    <div class="hidden md:block w-5/12"></div>
+                    <div class="timeline-item z-20 flex items-center order-1 bg-white shadow-xl w-8 h-8 rounded-full md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:!left-auto md:!before:hidden">
+                        <div class="mx-auto bg-primary w-4 h-4 rounded-full border-2 border-white shadow transition-transform duration-300 group-hover:scale-150"></div>
+                    </div>
+                    <div class="w-full md:w-5/12 bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all duration-300 transform group-hover:-translate-y-1 mt-4 md:mt-0 text-left md:text-right">
+                        <h3 class="font-bold text-xl text-primary mb-1">Foundational Volunteering</h3>
+                        <p class="text-sm text-gray-500 mb-3 font-semibold">First Year Engagements</p>
+                        <p class="text-gray-700 text-sm">Active participation across PR, Events Team, and Self Development roles, building strong foundational skills in organization and communication.</p>
+                        <span class="inline-block mt-3 text-secondary text-xs font-bold uppercase tracking-wider">View Details <i class="fas fa-search-plus ml-1"></i></span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal: Self Development -->
+    <div id="modal-self-dev" class="modal items-center justify-center">
+        <div class="modal-content bg-white rounded-2xl w-11/12 md:w-3/4 max-w-3xl max-h-[90vh] overflow-y-auto shadow-2xl relative">
+            <button onclick="closeModal('modal-self-dev')" class="absolute top-4 right-4 text-gray-500 hover:text-primary bg-gray-100 hover:bg-gray-200 rounded-full w-8 h-8 flex items-center justify-center transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="p-8">
+                <h3 class="text-2xl font-bold text-primary border-b pb-4 mb-6">Self Development Subhead GND (2025-2026)</h3>
+                
+                <h4 class="font-bold text-lg text-gray-800 mb-3"><i class="fas fa-calendar-alt text-secondary mr-2"></i> Events Organized</h4>
+                <ul class="space-y-4 mb-8">
+                    <li class="bg-gray-50 p-4 rounded-lg">
+                        <span class="font-bold text-gray-900 block mb-1">MedTimes Art Week - Vision Boards</span>
+                        <span class="text-gray-700 text-sm">Coordinated a collaborative vision-board activity that brought MSA teams together to reflect on previous achievements, establish new goals, and strengthen team engagement.</span>
+                    </li>
+                    <li class="bg-gray-50 p-4 rounded-lg">
+                        <span class="font-bold text-gray-900 block mb-1">Across the Table</span>
+                        <span class="text-gray-700 text-sm">Organized an interactive networking event that developed students' communication skills, confidence, and ability to express ideas while encouraging meaningful peer connections.</span>
+                    </li>
+                </ul>
+
+                <h4 class="font-bold text-lg text-gray-800 mb-3"><i class="fas fa-microphone text-secondary mr-2"></i> Talks Organized</h4>
+                <ul class="space-y-4">
+                    <li class="border-l-4 border-primary pl-4">
+                        <span class="font-bold text-gray-900">Nafs Toolbox Talk:</span> <span class="text-gray-700 text-sm">Coordinated a student-focused session on tawakkul, resilience, and managing uncertainty.</span>
+                    </li>
+                    <li class="border-l-4 border-primary pl-4">
+                        <span class="font-bold text-gray-900">Why Wait to Be Behind?:</span> <span class="text-gray-700 text-sm">Organized a motivational talk encouraging students to overcome procrastination and develop an intentional mindset.</span>
+                    </li>
+                    <li class="border-l-4 border-primary pl-4">
+                        <span class="font-bold text-gray-900">Ramadan Talks - "Return to Allah" and "Safety Net":</span> <span class="text-gray-700 text-sm">Organized two student talks addressing the deeper purpose of Ramadan and maintaining positive habits.</span>
+                    </li>
+                    <li class="border-l-4 border-primary pl-4">
+                        <span class="font-bold text-gray-900">Revolutionizing the MSA:</span> <span class="text-gray-700 text-sm">Coordinated a leadership-focused talk emphasizing initiative, accountability, and role ownership within the MSA.</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Global Health -->
+    <div id="modal-global-health" class="modal items-center justify-center">
+        <div class="modal-content bg-white rounded-2xl w-11/12 md:w-3/4 max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl relative">
+            <button onclick="closeModal('modal-global-health')" class="absolute top-4 right-4 text-gray-500 hover:text-secondary bg-gray-100 hover:bg-gray-200 rounded-full w-8 h-8 flex items-center justify-center transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="p-8">
+                <h3 class="text-2xl font-bold text-secondary border-b pb-4 mb-6">Global Health Society Podcast Head (2025-2027)</h3>
+                
+                <div class="space-y-6">
+                    <div class="flex items-start">
+                        <div class="bg-secondary/10 p-3 rounded-lg mr-4 text-secondary">
+                            <i class="fas fa-video text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900 mb-1">Street Style Interviews</h4>
+                            <p class="text-gray-700">Filmed and edited multiple street style interviews with students around the university campus, asking them questions and raising general awareness about important and minimally discussed health issues.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="bg-secondary/10 p-3 rounded-lg mr-4 text-secondary">
+                            <i class="fas fa-headphones text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900 mb-1">International Podcast Episodes</h4>
+                            <p class="text-gray-700">Filmed podcast episodes with doctors from the USA discussing skin problems and ways to fix and maintain a good skin routine.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Academic -->
+    <div id="modal-academic" class="modal items-center justify-center">
+        <div class="modal-content bg-white rounded-2xl w-11/12 md:w-3/4 max-w-3xl max-h-[90vh] overflow-y-auto shadow-2xl relative">
+            <button onclick="closeModal('modal-academic')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 rounded-full w-8 h-8 flex items-center justify-center transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="p-8">
+                <h3 class="text-2xl font-bold text-gray-900 border-b pb-4 mb-6">Academic Engagement & Presentations</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="font-bold text-lg text-primary mb-3">Committees & Tutoring</h4>
+                        <ul class="space-y-3">
+                            <li class="flex items-center"><i class="fas fa-award text-secondary w-6"></i> Exam Committee Best Member</li>
+                            <li class="flex items-center"><i class="fas fa-award text-secondary w-6"></i> Lab Committee Best Member</li>
+                            <li class="flex items-center"><i class="fas fa-chalkboard-teacher text-secondary w-6"></i> PAL Tutor</li>
+                            <li class="flex items-center"><i class="fas fa-book-medical text-secondary w-6"></i> MSK OSPE Crash Course</li>
+                            <li class="flex items-center"><i class="fas fa-book-medical text-secondary w-6"></i> Upper GIT Crash Course</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 class="font-bold text-lg text-primary mb-3">Speaking & Presentations</h4>
+                        <ul class="space-y-3">
+                            <li class="flex items-center"><i class="fas fa-users text-secondary w-6"></i> POD Mock OSPE Presenter</li>
+                            <li class="flex items-center"><i class="fas fa-users text-secondary w-6"></i> How To GIT Presenter</li>
+                            <li class="flex items-center"><i class="fas fa-bullhorn text-secondary w-6"></i> How To MSA Speaker</li>
+                            <li class="flex items-center"><i class="fas fa-door-open text-secondary w-6"></i> Open House GND Booth Speaker</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-8 bg-gray-50 p-6 rounded-xl border border-gray-200">
+                    <h4 class="font-bold text-lg text-gray-900 mb-2"><i class="fas fa-microscope text-primary mr-2"></i> Pediatrics Cardiology Journal Club</h4>
+                    <p class="font-semibold text-gray-800 text-sm mb-2">Methodology Presenter</p>
+                    <p class="text-gray-700 text-sm">Presented and critically appraised the methodology of the CHILD Trial, covering its multicenter randomized double-blind design, participant allocation, autologous cardiac progenitor-cell preparation and intramyocardial delivery, outcome measures, follow-up, methodological strengths, and study limitations.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: First Year -->
+    <div id="modal-first-year" class="modal items-center justify-center">
+        <div class="modal-content bg-white rounded-2xl w-11/12 md:w-3/4 max-w-3xl max-h-[90vh] overflow-y-auto shadow-2xl relative">
+            <button onclick="closeModal('modal-first-year')" class="absolute top-4 right-4 text-gray-500 hover:text-primary bg-gray-100 hover:bg-gray-200 rounded-full w-8 h-8 flex items-center justify-center transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="p-8">
+                <h3 class="text-2xl font-bold text-primary border-b pb-4 mb-6">First Year Involvement</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- PR -->
+                    <div class="bg-gray-50 p-5 rounded-xl border-t-4 border-primary shadow-sm">
+                        <h4 class="font-bold text-gray-900 mb-3 flex items-center"><i class="fas fa-bullhorn text-secondary mr-2"></i> PR Volunteer</h4>
+                        <ul class="text-sm text-gray-700 space-y-2">
+                            <li><strong>Oncology interest group:</strong> Walk in cancer awareness event</li>
+                            <li>Breast cancer awareness</li>
+                            <li class="text-primary font-semibold mt-2 pt-2 border-t border-gray-200">Lab Committee Honorable Mention</li>
+                        </ul>
+                    </div>
+
+                    <!-- Events -->
+                    <div class="bg-gray-50 p-5 rounded-xl border-t-4 border-secondary shadow-sm">
+                        <h4 class="font-bold text-gray-900 mb-3 flex items-center"><i class="fas fa-calendar-check text-primary mr-2"></i> Events Team Volunteer</h4>
+                        <ul class="text-sm text-gray-700 space-y-3">
+                            <li>
+                                <strong>Nights out event:</strong> Contributed to creating a joyful atmosphere, ensuring guests had a memorable experience while strengthening teamwork skills.
+                            </li>
+                            <li>
+                                <strong>Culture Day:</strong> Egyptian Booth Speaker & Organizer
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Self Dev -->
+                    <div class="bg-gray-50 p-5 rounded-xl border-t-4 border-gray-800 shadow-sm">
+                        <h4 class="font-bold text-gray-900 mb-3 flex items-center"><i class="fas fa-seedling text-secondary mr-2"></i> Self Development Volunteer</h4>
+                        <ul class="text-sm text-gray-700 space-y-3">
+                            <li>
+                                <strong>Insaan talk:</strong> Helped organize and engage participants in sessions about personal growth and purpose.
+                            </li>
+                            <li>
+                                <strong>Stagemasters:</strong> Worked closely with speakers, supporting public speaking development.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-gray-900 text-white py-12 border-t-4 border-primary">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-6 md:mb-0 text-center md:text-left">
+                <h2 class="signature text-white mb-1" style="background: none; -webkit-text-fill-color: white; font-size: 2.5rem;">Salma</h2>
+                <p class="text-gray-400 text-sm uppercase tracking-wider">Medical Student Resume</p>
+            </div>
+            
+            <div class="flex space-x-6">
+                <a href="mailto:smohamed01@alfaisal.edu" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition-colors hover:-translate-y-1 transform duration-300">
+                    <i class="fas fa-envelope text-lg"></i>
+                </a>
+                <a href="tel:+966564131353" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-secondary transition-colors hover:-translate-y-1 transform duration-300">
+                    <i class="fas fa-phone-alt text-lg"></i>
+                </a>
+                <button onclick="copyEmail()" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-white hover:text-gray-900 transition-colors hover:-translate-y-1 transform duration-300" title="Copy Email">
+                    <i class="fas fa-copy text-lg"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Toast Notification Container -->
+        <div id="toast" class="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 pointer-events-none z-50">
+            Email copied to clipboard!
+        </div>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const navbar = document.getElementById('navbar');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+        const reveals = document.querySelectorAll('.reveal');
+        
+        // --- Navbar Scroll Effect ---
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 10) {
+                navbar.classList.add('glass-panel', 'shadow-sm');
+                navbar.classList.remove('bg-transparent');
+            } else {
+                navbar.classList.remove('glass-panel', 'shadow-sm');
+                navbar.classList.add('bg-transparent');
+            }
+            revealElements();
+        });
+
+        // --- Mobile Menu Toggle ---
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            const icon = mobileMenuBtn.querySelector('i');
+            if (mobileMenu.classList.contains('hidden')) {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            } else {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            }
+        });
+
+        // Close mobile menu when a link is clicked
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                mobileMenuBtn.querySelector('i').classList.remove('fa-times');
+                mobileMenuBtn.querySelector('i').classList.add('fa-bars');
+            });
+        });
+
+        // --- Scroll Reveal Animation ---
+        function revealElements() {
+            const windowHeight = window.innerHeight;
+            const elementVisible = 100;
+
+            reveals.forEach(reveal => {
+                const elementTop = reveal.getBoundingClientRect().top;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('active');
+                }
+            });
+        }
+        
+        // Trigger once on load
+        window.addEventListener('load', () => {
+            // Slight delay for hero elements
+            setTimeout(revealElements, 100);
+            
+            // Set navbar initial state
+            if (window.scrollY > 10) {
+                navbar.classList.add('glass-panel', 'shadow-sm');
+            }
+        });
+
+        // --- Modal Functions ---
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling under modal
+            
+            // Close modal when clicking outside content
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal(modalId);
+                }
+            });
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('show');
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
+
+        // Escape key to close modals
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const openModals = document.querySelectorAll('.modal.show');
+                openModals.forEach(modal => {
+                    closeModal(modal.id);
+                });
+            }
+        });
+
+        // --- Copy to Clipboard Function (using execCommand fallback as requested) ---
+        function copyEmail() {
+            const email = "smohamed01@alfaisal.edu";
+            const textArea = document.createElement("textarea");
+            textArea.value = email;
+            
+            // Avoid scrolling to bottom
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.position = "fixed";
+            
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                if(successful) {
+                    showToast();
+                }
+            } catch (err) {
+                console.error('Fallback: Oops, unable to copy', err);
+            }
+            
+            document.body.removeChild(textArea);
+        }
+
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.style.opacity = '1';
+            setTimeout(() => {
+                toast.style.opacity = '0';
+            }, 3000);
+        }
+
+    </script>
+</body>
+</html>
